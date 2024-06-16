@@ -1,0 +1,26 @@
+{
+  "rust-analyzer.cargo.loadOutDirsFromCheck": true,
+  "rust-analyzer.procMacro.enable": true,
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "rust-analyzer.assist.importGranularity": "crate",
+  "rust-analyzer.assist.importPrefix": "by_crate",
+  "rust-analyzer.completion.autoimport.enable": true,
+  "rust-analyzer.assist.importMergeBehavior": "full",
+  "rust-analyzer.diagnostics.enable": true,
+  "rust-analyzer.diagnostics.disabled": [],
+  "rust-analyzer.completion.postfix.enable": true,
+  "suggest.floatConfig": {
+    "maxWidth": 120,
+    "maxHeight": 120
+  },
+  "rust-analyzer.lens.enable": true,
+  "rust-analyzer.lens.methodReferences": true,
+  "rust-analyzer.lens.references": true,
+  "rust-analyzer.lens.debug": true,
+  "rust-analyzer.inlayHints.enable": true,
+  "rust-analyzer.inlayHints.typeHints": true,
+  "rust-analyzer.inlayHints.parameterHints": true,
+  "rust-analyzer.inlayHints.chainingHints": true,
+  "rust-analyzer.inlayHints.returnHints": true
+}
+

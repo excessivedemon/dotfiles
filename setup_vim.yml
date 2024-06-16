@@ -1,0 +1,49 @@
+---
+- name: Setup Vim for Rust development on macOS
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Ensure the Vim plugin directory exists
+      file:
+        path: "{{ lookup('env', 'HOME') }}/.vim/pack/plugins/start"
+        state: directory
+
+    - name: Install rust.vim plugin
+      git:
+        repo: 'https://github.com/rust-lang/rust.vim'
+        dest: "{{ lookup('env', 'HOME') }}/.vim/pack/plugins/start/rust.vim"
+
+    - name: Install coc.nvim plugin
+      git:
+        repo: 'https://github.com/neoclide/coc.nvim.git'
+        dest: "{{ lookup('env', 'HOME') }}/.vim/pack/plugins/start/coc.nvim"
+        version: 'release'
+
+    - name: Install coc.nvim dependencies
+      shell: |
+        cd ~/.vim/pack/plugins/start/coc.nvim && npm install
+
+    - name: Install gruvbox colorscheme
+      git:
+        repo: 'https://github.com/morhetz/gruvbox'
+        dest: "{{ lookup('env', 'HOME') }}/.vim/pack/plugins/start/gruvbox"
+
+    - name: Copy coc-settings.json to user's configuration directory
+      copy:
+        src: config_files/coc-settings.json
+        dest: ~/.vim/coc-settings.json
+
+    - name: Copy send_buffer_to_openai.sh to user's home directory
+      copy:
+        src: config_files/send_buffer_to_openai.sh
+        dest: ~/.vim/send_buffer_to_openai.sh
+
+    - name: Copy env to user's home directory
+      copy:
+        src: config_files/env
+        dest: ~/.vim/.env
+
+    - name: Copy vimrc to user's home directory
+      copy:
+        src: config_files/vimrc
+        dest: ~/.vimrc
