@@ -1,0 +1,46 @@
+---
+- name: Common setup for programming languages
+  hosts: localhost
+  tasks:
+    - name: Check if latest Node.js is installed
+      command: asdf list nodejs
+      register: asdf_nodejs_list
+      ignore_errors: true
+
+    - name: Install Node.js plugin for asdf if not installed
+      shell: |
+        . $HOME/.asdf/asdf.sh
+        asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+      when: asdf_nodejs_list.stdout == ""
+
+    - name: Get latest Node.js version
+      shell: |
+        . $HOME/.asdf/asdf.sh
+        asdf list-all nodejs | tail -1
+      register: latest_nodejs_version
+      when: asdf_nodejs_list.stdout == ""
+
+    - name: Install latest Node.js version
+      shell: |
+        . $HOME/.asdf/asdf.sh
+        asdf install nodejs {{ latest_nodejs_version.stdout }}
+        asdf global nodejs {{ latest_nodejs_version.stdout }}
+      when: asdf_nodejs_list.stdout == ""
+
+    - name: Check if rustup is installed
+      command: rustup --version
+      register: rustup_installed
+      ignore_errors: true
+
+    - name: Install rustup if not installed
+      shell: |
+        curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      when: rustup_installed.failed
+
+    - name: Ensure Rust PATH entry is present in .zshrc
+      lineinfile:
+        path: ~/.zshrc
+        line: 'export PATH="$HOME/.cargo/bin:$PATH"'
+        state: present
+        create: yes
+
